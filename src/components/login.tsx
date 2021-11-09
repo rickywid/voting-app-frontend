@@ -1,6 +1,8 @@
 import { Flex, Heading, Input, Button, Text } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+
+import { UserContext } from "../contextFile";
 
 interface LoginProps {}
 
@@ -8,6 +10,10 @@ const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
+
+  const { user, setUser } = useContext(UserContext);
+
+  console.log(user);
 
   function handleUsername(e: any) {
     setUsername(e.target.value);
@@ -39,6 +45,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           userId: data.userId,
         })
       );
+      setUser(data);
     } else {
       setLoginFailed(true);
     }

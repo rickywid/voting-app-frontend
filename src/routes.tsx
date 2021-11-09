@@ -7,7 +7,6 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 
 const routes = (
-  //hej
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/poll/:id" element={<Poll />} />
