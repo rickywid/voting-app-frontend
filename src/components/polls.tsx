@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading, Container } from '@chakra-ui/react';
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { mockPolls } from '../mock/polls';
@@ -33,18 +33,24 @@ const Polls: FunctionComponent<PollsProps> = () => {
 
             return (
                 <Link to={`/poll/${id}`}>
-                    <p>{question}</p>
-                    <p>{poll_count}</p>
+                    <Box 
+                        background="#c3fade"
+                        padding={3}
+                        borderRadius={5}
+                        fontWeight="bold"
+                    >
+                        <p>{question}</p>
+                        <p>{poll_count}</p>
+                    </Box>
                 </Link>
             )
         })
-
     }
 
     return (
         <Box>
-            <Heading as="h2" size="large">Polls list</Heading>
-            <Box style={{ clear: "both" }}>
+            <Heading as="h2" size="large">Welcome [user]</Heading>
+            <Box>
                 {polls.length ?
                     <Grid
                         templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
