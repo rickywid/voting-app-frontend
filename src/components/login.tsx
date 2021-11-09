@@ -1,6 +1,6 @@
 import { Flex, Heading, Input, Button, Text } from "@chakra-ui/react";
 import { FunctionComponent, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../contextFile";
 
@@ -12,6 +12,7 @@ const Login: FunctionComponent<LoginProps> = () => {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const { user, setUser } = useContext(UserContext);
+  let navigate = useNavigate();
 
   console.log(user);
 
@@ -46,6 +47,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         })
       );
       setUser(data);
+      navigate("/", { replace: true });
     } else {
       setLoginFailed(true);
     }
