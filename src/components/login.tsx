@@ -1,13 +1,18 @@
 import { Flex, Heading, Input, Button, Text } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
-import { Link } from "react-router-dom";
+import { FunctionComponent, useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-interface LoginProps {}
+import { UserContext } from "../contextFile";
+
+interface LoginProps { }
 
 const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
+
+  const { auth, setAuth } = useContext(UserContext);
+  let navigate = useNavigate();
 
   function handleUsername(e: any) {
     setUsername(e.target.value);
@@ -28,17 +33,20 @@ const Login: FunctionComponent<LoginProps> = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include'
     });
     const data = await result.json();
 
     if (data.success) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          loggedIn: true,
-          userId: data.userId,
-        })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     loggedIn: true,
+      //     userId: data.userId,
+      //   })
+      // );
+      setAuth({ user: userCredentials.username });
+      navigate("/", { replace: true });
     } else {
       setLoginFailed(true);
     }
