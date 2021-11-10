@@ -4,17 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../contextFile";
 
-interface LoginProps {}
+interface LoginProps { }
 
 const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
 
-  const { user, setUser } = useContext(UserContext);
+  const { auth, setAuth } = useContext(UserContext);
   let navigate = useNavigate();
-
-  console.log(user);
 
   function handleUsername(e: any) {
     setUsername(e.target.value);
@@ -40,14 +38,14 @@ const Login: FunctionComponent<LoginProps> = () => {
     const data = await result.json();
 
     if (data.success) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          loggedIn: true,
-          userId: data.userId,
-        })
-      );
-      setUser(data);
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     loggedIn: true,
+      //     userId: data.userId,
+      //   })
+      // );
+      setAuth({ user: userCredentials.username });
       navigate("/", { replace: true });
     } else {
       setLoginFailed(true);
