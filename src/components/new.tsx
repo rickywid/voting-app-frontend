@@ -5,7 +5,7 @@ import { UserContext } from "../contextFile";
 import { BiPlus } from "react-icons/bi";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-interface NewPollProps {}
+interface NewPollProps { }
 
 type Options = {
   question: string;
@@ -52,9 +52,6 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
   });
 
   async function submitPoll(question: any, options: any) {
-    console.log("question is:", question);
-    console.log("options are:", options);
-
     const newPoll = {
       question,
       options,
@@ -71,9 +68,9 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
       }
     );
     const data = await result.json();
+    navigate('/');
 
-    console.log(data);
-  }
+ }
 
   return (
     <Flex direction="column" align="center">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Image, ListItem, UnorderedList } from "@chakra-ui/react";
 import routes from "./routes";
 import { UserContext } from "./contextFile";
 
@@ -19,7 +19,6 @@ function App() {
         credentials: 'include'
       });
       const user = await res.json();
-      console.log(user);
       setAuth(user);
       setLoading(false);
     })();
@@ -43,11 +42,17 @@ function App() {
       {
         loading ? <Box></Box> : (
           <Container maxW="container.xl">
-            <nav>
+            <Box paddingTop={5} paddingBottom={5}>
               <Flex
                 justifyContent="space-between"
+                background="#7b8e93"
+                padding="10px 20px"
+                borderRadius="10px"
+                alignItems="center"
               >
-                <Box>Voting App</Box>
+                <Box><Link to={'/'} style={{ fontWeight: "bold" }}>
+                  <Image src="https://emojis.slackmojis.com/emojis/images/1534453840/4524/zlatan_ibrahimovic.png?1534453840" display="inline-block" height={10} />
+                  Zultan's Voting App</Link></Box>
                 <Box>
                   {auth.user ? (
                     <>
@@ -61,16 +66,20 @@ function App() {
                       >sign out</Button>
                     </>
                   ) : (
-                    <ul>
-                      <li><Link to="/signup">signup</Link></li>
-                      <li><Link to="/login">login</Link></li>
-                    </ul>
+                    <UnorderedList>
+                      <ListItem mr={4} listStyleType="none" display="inline"><Link to="/login">
+                        <Button
+                          size="xs"
+                          colorScheme="whatsapp"
+                        >login</Button></Link></ListItem>
+                      <ListItem listStyleType="none" display="inline"><Link to="/signup"><Button colorScheme="linkedin" size="xs">sign up</Button></Link></ListItem>
+                    </UnorderedList>
                   )}
                 </Box>
               </Flex>
-            </nav>
+            </Box>
             <UserContext.Provider value={{ auth, setAuth }}>
-              <Box>{routes}</Box>
+              <Box mt={100}>{routes}</Box>
             </UserContext.Provider>
           </Container>
         )

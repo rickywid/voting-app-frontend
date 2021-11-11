@@ -22,7 +22,6 @@ const Home: FunctionComponent<HomeProps> = () => {
         (async () => {
             const res = await fetch('https://tva-backend.herokuapp.com/polls');
             const data = await res.json();
-            console.log(data);
             setPolls(data);
         })();
     }, []);
@@ -34,7 +33,7 @@ const Home: FunctionComponent<HomeProps> = () => {
             return (
                 <Link to={`/poll/${id}`}>
                     <Box
-                        background="#3e5177"
+                        background="#f2f9e3"
                         padding={3}
                         borderRadius={5}
                         fontWeight="bold"
@@ -47,13 +46,11 @@ const Home: FunctionComponent<HomeProps> = () => {
         })
     }
 
-    console.log(auth)
-
     return (
         <>
             {auth.user ? (
                 <Box>
-                    <Heading as="h2" size="large">Welcome {auth.user}</Heading>
+                    <Heading as="h2" size="large" mb={5}>Welcome {auth.user}</Heading>
                     <Box>
                         {polls.length ?
                             <Grid

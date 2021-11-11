@@ -64,6 +64,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           placeholder="Username"
           size="lg"
           onChange={handleUsername}
+          background="white"
         />
         <Input
           my="1rem"
@@ -71,6 +72,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           size="lg"
           type="password"
           onChange={handlePassword}
+          background="white"
         />
         <Flex align="center">
           <Button
@@ -78,12 +80,13 @@ const Login: FunctionComponent<LoginProps> = () => {
             mr="1rem"
             w="50%"
             type="submit"
+            colorScheme="whiteAlpha"
             onClick={submitPassword}
           >
             Log In
           </Button>
           <Text>or</Text>
-          <Button ml="1rem">
+          <Button ml="1rem" colorScheme="facebook">
             <Link to="/signup">signup</Link>
           </Button>
         </Flex>
