@@ -3,14 +3,9 @@ import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contextFile";
 import { BiPlus } from "react-icons/bi";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-interface NewPollProps { }
-
-type Options = {
-  question: string;
-  option: string;
-};
+interface NewPollProps {}
 
 const NewPoll: FunctionComponent<NewPollProps> = () => {
   const { auth } = useContext(UserContext);
@@ -57,7 +52,7 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
       options,
     };
 
-    const result = await fetch(
+    await fetch(
       "https://tva-backend.herokuapp.com/poll/create",
       {
         method: "POST",
@@ -67,10 +62,8 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
         },
       }
     );
-    const data = await result.json();
-    navigate('/');
-
- }
+    navigate("/");
+  }
 
   return (
     <Flex direction="column" align="center">
@@ -82,6 +75,8 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
           my="1rem"
           placeholder="Write your question here"
           onChange={handleQuestion}
+          background="white"
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         {noQuestion && <Text color="red">You need a Question</Text>}
         <form onSubmit={onSubmit}>
@@ -93,6 +88,8 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
                 type="text"
                 ref={register({ required: true })}
                 name={`option ${index + 1} `}
+                background="white"
+                _placeholder={{ color: "black", opacity: "50%" }}
               />
             );
           })}
@@ -106,7 +103,7 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
             >
               Add an option
             </Button>
-            <Button mx="1rem" type="submit">
+            <Button mx="1rem" type="submit" colorScheme="facebook">
               Submit
             </Button>
           </Flex>

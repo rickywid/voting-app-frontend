@@ -4,14 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../contextFile";
 
-interface LoginProps { }
+interface LoginProps {}
 
 const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
 
-  const { auth, setAuth } = useContext(UserContext);
+  const { setAuth } = useContext(UserContext);
   let navigate = useNavigate();
 
   function handleUsername(e: any) {
@@ -33,18 +33,11 @@ const Login: FunctionComponent<LoginProps> = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: 'include'
+      credentials: "include",
     });
     const data = await result.json();
 
     if (data.success) {
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({
-      //     loggedIn: true,
-      //     userId: data.userId,
-      //   })
-      // );
       setAuth({ user: userCredentials.username, userId: data.userId });
       navigate("/", { replace: true });
     } else {
@@ -65,6 +58,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           size="lg"
           onChange={handleUsername}
           background="white"
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Input
           my="1rem"
@@ -73,6 +67,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           type="password"
           onChange={handlePassword}
           background="white"
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Flex align="center">
           <Button
