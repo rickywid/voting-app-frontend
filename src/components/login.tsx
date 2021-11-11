@@ -11,7 +11,7 @@ const Login: FunctionComponent<LoginProps> = () => {
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
 
-  const { auth, setAuth } = useContext(UserContext);
+  const { setAuth } = useContext(UserContext);
   let navigate = useNavigate();
 
   function handleUsername(e: any) {
@@ -38,13 +38,6 @@ const Login: FunctionComponent<LoginProps> = () => {
     const data = await result.json();
 
     if (data.success) {
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({
-      //     loggedIn: true,
-      //     userId: data.userId,
-      //   })
-      // );
       setAuth({ user: userCredentials.username, userId: data.userId });
       navigate("/", { replace: true });
     } else {

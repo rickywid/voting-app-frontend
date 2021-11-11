@@ -3,14 +3,9 @@ import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contextFile";
 import { BiPlus } from "react-icons/bi";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 interface NewPollProps {}
-
-type Options = {
-  question: string;
-  option: string;
-};
 
 const NewPoll: FunctionComponent<NewPollProps> = () => {
   const { auth } = useContext(UserContext);
@@ -57,7 +52,7 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
       options,
     };
 
-    const result = await fetch(
+    await fetch(
       "https://tva-backend.herokuapp.com/poll/create",
       {
         method: "POST",
@@ -67,7 +62,6 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
         },
       }
     );
-    const data = await result.json();
     navigate("/");
   }
 

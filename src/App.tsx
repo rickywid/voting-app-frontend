@@ -18,9 +18,6 @@ function App() {
   let navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
 
-  /**
-   * Make a request to /auth endpoint to check if the user is authenticated
-   */
   useEffect(() => {
     // /auth route will return the authenticated user's name
     (async () => {
@@ -35,12 +32,11 @@ function App() {
 
   const handleSignout = () => {
     (async () => {
-      const res = await fetch("https://tva-backend.herokuapp.com/signout", {
+      await fetch("https://tva-backend.herokuapp.com/signout", {
         credentials: "include",
         method: "POST",
         body: JSON.stringify({}),
       });
-      const user = await res.json();
       setAuth({ user: null });
     })();
     navigate("/");
@@ -69,11 +65,11 @@ function App() {
                   />
                   Zultan's Voting App
                 </Link>
-                <Text fontSize="1.5rem" fontWeight="bold" ml="2rem">
+              </Flex>
+              <Flex alignItems="center">
+                <Text display="inline-block" fontWeight="bold" mr="1rem" lineHeight="1">
                   <Link to={"/"}>Home</Link>
                 </Text>
-              </Flex>
-              <Box>
                 {auth.user ? (
                   <>
                     <Link to="/new" style={{ marginRight: 10 }}>
@@ -107,7 +103,7 @@ function App() {
                     </ListItem>
                   </UnorderedList>
                 )}
-              </Box>
+              </Flex>
             </Flex>
           </Box>
           <UserContext.Provider value={{ auth, setAuth }}>

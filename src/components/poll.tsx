@@ -4,7 +4,6 @@ import {
   Heading,
   Radio,
   RadioGroup,
-  Select,
   Stack,
 } from "@chakra-ui/react";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
@@ -87,10 +86,9 @@ const Poll: FunctionComponent<PollProps> = () => {
           optionsWeight,
         };
 
-        const res1 = await fetch(
+        await fetch(
           `https://tva-backend.herokuapp.com/poll/${id}/submit`,
           {
-            // const res1 = await fetch(`http://localhost:3001/poll/${id}/submit`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(bodyTest),
@@ -99,7 +97,7 @@ const Poll: FunctionComponent<PollProps> = () => {
             },
           }
         );
-        const res2 = await fetch(
+        await fetch(
           `https://tva-backend.herokuapp.com/poll/${id}/submit-user`,
           {
             method: "POST",
@@ -112,8 +110,6 @@ const Poll: FunctionComponent<PollProps> = () => {
             },
           }
         );
-        const data1 = await res1.json();
-        const data2 = await res2.json();
         setShowResults(true);
 
       }
