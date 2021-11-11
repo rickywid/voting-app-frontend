@@ -40,7 +40,12 @@ const Poll: FunctionComponent<PollProps> = () => {
     (async () => {
       const res = await fetch(`https://tva-backend.herokuapp.com/poll/${id}`);
       const res2 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/voted`, {
-        credentials: 'include'
+      method: 'POST',  
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+        body: JSON.stringify({ userId: auth.userId })
       });
 
       const data = await res.json();
