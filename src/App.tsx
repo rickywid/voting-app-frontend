@@ -7,6 +7,7 @@ import { UserContext } from "./contextFile";
 function App() {
   const [auth, setAuth] = useState({ user: null });
   let navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(true);
 
   /**
    * Make a request to /auth endpoint to check if the user is authenticated
@@ -18,7 +19,9 @@ function App() {
         credentials: 'include'
       });
       const user = await res.json();
+      console.log(user);
       setAuth(user);
+      setLoading(false);
     })();
   }, []);
 
@@ -35,40 +38,44 @@ function App() {
     navigate('/');
   }
 
-  console.log(auth.user)
-
   return (
-    <Container maxW="container.xl">
-      <nav>
-        <Flex
-          justifyContent="space-between"
-        >
-          <Box>Voting App</Box>
-          <Box>
-            {auth.user ? (
-              <>
-                <Link to="/new" style={{marginRight: 10}}>
-                  <Button colorScheme="linkedin" size="xs">new poll</Button>
-                </Link>
-                <Button
-                  size="xs"
-                  colorScheme="whatsapp"
-                  onClick={handleSignout}
-                >sign out</Button>
-              </>
-            ) : (
-              <ul>
-                <li><Link to="/signup">signup</Link></li>
-                <li><Link to="/login">login</Link></li>
-              </ul>
-            )}
-          </Box>
-        </Flex>
-      </nav>
-      <UserContext.Provider value={{ auth, setAuth }}>
-        <Box>{routes}</Box>
-      </UserContext.Provider>
-    </Container>
+    <>
+      {
+        loading ? <Box></Box> : (
+          <Container maxW="container.xl">
+            <nav>
+              <Flex
+                justifyContent="space-between"
+              >
+                <Box>Voting App</Box>
+                <Box>
+                  {auth.user ? (
+                    <>
+                      <Link to="/new" style={{ marginRight: 10 }}>
+                        <Button colorScheme="linkedin" size="xs">new poll</Button>
+                      </Link>
+                      <Button
+                        size="xs"
+                        colorScheme="whatsapp"
+                        onClick={handleSignout}
+                      >sign out</Button>
+                    </>
+                  ) : (
+                    <ul>
+                      <li><Link to="/signup">signup</Link></li>
+                      <li><Link to="/login">login</Link></li>
+                    </ul>
+                  )}
+                </Box>
+              </Flex>
+            </nav>
+            <UserContext.Provider value={{ auth, setAuth }}>
+              <Box>{routes}</Box>
+            </UserContext.Provider>
+          </Container>
+        )
+      }
+    </>
   );
 }
 
