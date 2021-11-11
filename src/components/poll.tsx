@@ -75,15 +75,18 @@ const Poll: FunctionComponent<PollProps> = () => {
         };
 
         console.log(bodyTest);
-        // const res1 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/submit`, {
-        const res1 = await fetch(`http://localhost:3001/poll/${id}/submit`, {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(bodyTest),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const res1 = await fetch(
+          `https://tva-backend.herokuapp.com/poll/${id}/submit`,
+          {
+            // const res1 = await fetch(`http://localhost:3001/poll/${id}/submit`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(bodyTest),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const res2 = await fetch(
           `https://tva-backend.herokuapp.com/poll/${id}/submit-user`,
           {
