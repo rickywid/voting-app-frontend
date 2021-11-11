@@ -5,7 +5,7 @@ import { UserContext } from "../contextFile";
 import { BiPlus } from "react-icons/bi";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-interface NewPollProps {}
+interface NewPollProps { }
 
 type Options = {
   question: string;
@@ -71,6 +71,7 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
       }
     );
     const data = await result.json();
+    navigate('/');
 
     console.log(data);
   }

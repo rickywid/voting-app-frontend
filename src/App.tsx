@@ -47,7 +47,7 @@ function App() {
               <Flex
                 justifyContent="space-between"
               >
-                <Box>Voting App</Box>
+                <Box><Link to={'/'}>Zultan's Voting App</Link></Box>
                 <Box>
                   {auth.user ? (
                     <>

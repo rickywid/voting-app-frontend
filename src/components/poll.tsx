@@ -10,8 +10,9 @@ import {
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../contextFile";
+import { Bar } from 'react-chartjs-2';
 
-interface PollProps {}
+interface PollProps { }
 
 export interface IPoll {
   id: number;
@@ -21,22 +22,6 @@ export interface IPoll {
   total_count: number;
 }
 
-/**
- * 
- * Display the poll if the user hasn't voted else show the poll results
- *
-        
-        Get poll
-        /poll/:id
-
-        When submitting poll vote, call:
-        - /poll/:id/submit 
-        - /poll/:id/submit-user
-
-        After the poll submits, show the updated results by calling:
-        - /poll/:id/results
- */
-
 const Poll: FunctionComponent<PollProps> = () => {
   const { auth } = useContext(UserContext);
   let { id } = useParams();
@@ -44,6 +29,8 @@ const Poll: FunctionComponent<PollProps> = () => {
   const [poll, setPoll] = useState<IPoll>();
   const [loading, setLoading] = useState<boolean>(true);
   const [voteSelected, setSelectedVote] = useState<number>();
+  const [showResults, setShowResults] = useState<boolean>(false);
+  const [pollResults, setPollResults] = useState<any>();
 
   useEffect(() => {
     if (!auth.user) {
@@ -52,11 +39,34 @@ const Poll: FunctionComponent<PollProps> = () => {
 
     (async () => {
       const res = await fetch(`https://tva-backend.herokuapp.com/poll/${id}`);
+      const res2 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/voted`, {
+        credentials: 'include'
+      });
+
       const data = await res.json();
-      setPoll(data[0]);
+      const data2 = await res2.json();
+
+      if (data2.success) {
+        setShowResults(true);
+      }
+
+      if (data)
+        setPoll(data[0]);
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    const fetchReq = async () => {
+      const res3 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/results`, {
+        credentials: 'include'
+      });
+      const data3 = await res3.json();
+      setPollResults(data3);
+    }
+
+    fetchReq();
+  }, [showResults, setShowResults])
 
   const handleSelect = (e: string) => {
     setSelectedVote(parseInt(e));
@@ -66,7 +76,6 @@ const Poll: FunctionComponent<PollProps> = () => {
     (async () => {
       if (poll) {
         const optionsWeight = JSON.parse(poll.options_weight);
-        console.log(optionsWeight);
 
         const bodyTest = {
           choice: voteSelected,
@@ -74,7 +83,6 @@ const Poll: FunctionComponent<PollProps> = () => {
           optionsWeight,
         };
 
-        console.log(bodyTest);
         const res1 = await fetch(
           `https://tva-backend.herokuapp.com/poll/${id}/submit`,
           {
@@ -102,37 +110,82 @@ const Poll: FunctionComponent<PollProps> = () => {
         );
         const data1 = await res1.json();
         const data2 = await res2.json();
+        setShowResults(true);
 
-        console.log(data1, data2);
       }
     })();
   };
 
+  const displayChart = () => {
+
+    const labels = JSON.parse(poll!.options);
+    const d = {
+      label: '# of votes',
+      data: JSON.parse(pollResults[0].options_weight)
+    }
+
+    const data = {
+      labels,
+      datasets: [
+        {
+          ...d,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    return <Bar data={data} />
+  }
+
   return (
     <>
+      <Heading as="h2" size="3xl">
+        {poll!.question}
+      </Heading>
       {loading ? (
         ""
       ) : (
         <Box>
-          <Heading as="h2" size="3xl">
-            {poll!.question}
-          </Heading>
-          <RadioGroup onChange={(e) => handleSelect(e)} value={voteSelected}>
-            <Stack>
-              {JSON.parse(poll!.options).map(
-                (option: string, index: string) => {
-                  return (
-                    <Radio size="lg" colorScheme="red" value={index}>
-                      {option}
-                    </Radio>
-                  );
-                }
-              )}
-            </Stack>
-          </RadioGroup>
-          <Button onClick={handleSubmit} colorScheme="yellow">
-            Vote
-          </Button>
+          {showResults ? (
+            <>
+              {displayChart()}
+            </>
+          ) : (
+            <>
+              <RadioGroup onChange={(e) => handleSelect(e)} value={voteSelected}>
+                <Stack>
+                  {JSON.parse(poll!.options).map(
+                    (option: string, index: string) => {
+                      return (
+                        <Radio size="lg" colorScheme="red" value={index}>
+                          {option}
+                        </Radio>
+                      );
+                    }
+                  )}
+                </Stack>
+              </RadioGroup>
+              <Button onClick={handleSubmit} colorScheme="yellow">
+                Vote
+              </Button>
+            </>
+          )}
         </Box>
       )}
     </>
