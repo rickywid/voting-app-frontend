@@ -71,6 +71,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
           onChange={handleUsername}
           background="white"
           required
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Input
           my="1rem"
@@ -79,6 +80,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
           type="password"
           background="white"
           onChange={handlePassword}
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Flex align="center">
           <Text pos="absolute" left="0">

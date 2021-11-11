@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../contextFile";
 
-interface LoginProps { }
+interface LoginProps {}
 
 const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
@@ -33,7 +33,7 @@ const Login: FunctionComponent<LoginProps> = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: 'include'
+      credentials: "include",
     });
     const data = await result.json();
 
@@ -65,6 +65,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           size="lg"
           onChange={handleUsername}
           background="white"
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Input
           my="1rem"
@@ -73,6 +74,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           type="password"
           onChange={handlePassword}
           background="white"
+          _placeholder={{ color: "black", opacity: "50%" }}
         />
         <Flex align="center">
           <Button
