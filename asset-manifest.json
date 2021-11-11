@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/voting-app-frontend/static/js/main.ada0a02a.chunk.js",
-    "main.js.map": "/voting-app-frontend/static/js/main.ada0a02a.chunk.js.map",
+    "main.js": "/voting-app-frontend/static/js/main.95600e74.chunk.js",
+    "main.js.map": "/voting-app-frontend/static/js/main.95600e74.chunk.js.map",
     "runtime-main.js": "/voting-app-frontend/static/js/runtime-main.2dc8adee.js",
     "runtime-main.js.map": "/voting-app-frontend/static/js/runtime-main.2dc8adee.js.map",
     "static/js/2.a9b2a428.chunk.js": "/voting-app-frontend/static/js/2.a9b2a428.chunk.js",
@@ -14,6 +14,6 @@
   "entrypoints": [
     "static/js/runtime-main.2dc8adee.js",
     "static/js/2.a9b2a428.chunk.js",
-    "static/js/main.ada0a02a.chunk.js"
+    "static/js/main.95600e74.chunk.js"
   ]
 }
