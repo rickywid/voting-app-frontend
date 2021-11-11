@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Heading,
-  Input,
-  Textarea,
-  Button,
-  FormControl,
-} from "@chakra-ui/react";
+import { Flex, Heading, Input, Textarea, Button, Text } from "@chakra-ui/react";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contextFile";
@@ -22,14 +15,9 @@ type Options = {
 const NewPoll: FunctionComponent<NewPollProps> = () => {
   const { auth } = useContext(UserContext);
   let navigate = useNavigate();
-  const { register, handleSubmit } = useForm<Options>();
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    alert(JSON.stringify(data));
-  });
-
   const [numOfOptions, setNumOfOptions] = useState(["option", "option"]);
-  const [options, setOptions] = useState(null);
+  const [question, setQuestion] = useState("");
+  const [noQuestion, setNoQuestion] = useState(false);
 
   useEffect(() => {
     if (!auth.user) {
@@ -37,17 +25,54 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
     }
   });
 
+  const { register, handleSubmit, errors } = useForm<any>();
+
+  function handleQuestion(e: any) {
+    setQuestion(e.target.value);
+  }
+
   function addOption() {
-    console.log("new option");
-
     const newArray = [...numOfOptions, "option"];
-
     setNumOfOptions(newArray);
   }
 
-  function handleOptionText(e: any) {
-    console.log(e.target.value);
-    console.log("hi");
+  const onSubmit = handleSubmit((data) => {
+    let options = [];
+
+    for (const option of Object.values(data)) {
+      options.push(option);
+    }
+
+    if (question.length === 0) {
+      setNoQuestion(true);
+    } else {
+      setNoQuestion(false);
+      submitPoll(question, options);
+    }
+  });
+
+  async function submitPoll(question: any, options: any) {
+    console.log("question is:", question);
+    console.log("options are:", options);
+
+    const newPoll = {
+      question,
+      options,
+    };
+
+    const result = await fetch(
+      "https://tva-backend.herokuapp.com/poll/create",
+      {
+        method: "POST",
+        body: JSON.stringify(newPoll),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await result.json();
+
+    console.log(data);
   }
 
   return (
@@ -56,24 +81,25 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
         Create a new poll
       </Heading>
       <Flex direction="column" w="30rem">
+        <Textarea
+          my="1rem"
+          placeholder="Write your question here"
+          onChange={handleQuestion}
+        />
+        {noQuestion && <Text color="red">You need a Question</Text>}
         <form onSubmit={onSubmit}>
-          <Textarea
-            my="1rem"
-            placeholder="Write your question here"
-            name="question"
-          />
           {numOfOptions.map((option, index) => {
             return (
               <Input
                 my="1rem"
                 placeholder={`Option ${index + 1}`}
-                onchange={handleOptionText}
                 type="text"
-                ref={register}
-                name={`option ${index}`}
+                ref={register({ required: true })}
+                name={`option ${index + 1} `}
               />
             );
           })}
+          {errors.option && <Text> hallo</Text>}
           <Flex justify="center" my="1rem">
             <Button
               mx="1rem"
