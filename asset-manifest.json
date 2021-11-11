@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/voting-app-frontend/static/js/main.a16aa6b9.chunk.js",
-    "main.js.map": "/voting-app-frontend/static/js/main.a16aa6b9.chunk.js.map",
+    "main.js": "/voting-app-frontend/static/js/main.61b59b4e.chunk.js",
+    "main.js.map": "/voting-app-frontend/static/js/main.61b59b4e.chunk.js.map",
     "runtime-main.js": "/voting-app-frontend/static/js/runtime-main.2dc8adee.js",
     "runtime-main.js.map": "/voting-app-frontend/static/js/runtime-main.2dc8adee.js.map",
-    "static/js/2.fab428d7.chunk.js": "/voting-app-frontend/static/js/2.fab428d7.chunk.js",
-    "static/js/2.fab428d7.chunk.js.map": "/voting-app-frontend/static/js/2.fab428d7.chunk.js.map",
+    "static/js/2.ee98c95c.chunk.js": "/voting-app-frontend/static/js/2.ee98c95c.chunk.js",
+    "static/js/2.ee98c95c.chunk.js.map": "/voting-app-frontend/static/js/2.ee98c95c.chunk.js.map",
     "static/js/3.84062fd3.chunk.js": "/voting-app-frontend/static/js/3.84062fd3.chunk.js",
     "static/js/3.84062fd3.chunk.js.map": "/voting-app-frontend/static/js/3.84062fd3.chunk.js.map",
     "index.html": "/voting-app-frontend/index.html",
-    "static/js/2.fab428d7.chunk.js.LICENSE.txt": "/voting-app-frontend/static/js/2.fab428d7.chunk.js.LICENSE.txt"
+    "static/js/2.ee98c95c.chunk.js.LICENSE.txt": "/voting-app-frontend/static/js/2.ee98c95c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2dc8adee.js",
-    "static/js/2.fab428d7.chunk.js",
-    "static/js/main.a16aa6b9.chunk.js"
+    "static/js/2.ee98c95c.chunk.js",
+    "static/js/main.61b59b4e.chunk.js"
   ]
 }
