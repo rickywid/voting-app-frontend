@@ -45,7 +45,7 @@ const Login: FunctionComponent<LoginProps> = () => {
       //     userId: data.userId,
       //   })
       // );
-      setAuth({ user: userCredentials.username });
+      setAuth({ user: userCredentials.username, userId: data.userId });
       navigate("/", { replace: true });
     } else {
       setLoginFailed(true);
