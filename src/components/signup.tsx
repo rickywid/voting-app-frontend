@@ -48,7 +48,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
         //   })
         // );
         setAuth({ user: userCredentials.username });
-        navigate("/", { replace: true });
+        navigate("/login", { replace: true });
       } else {
         setSignupFailed(true);
       }
@@ -69,6 +69,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
           placeholder="Username"
           size="lg"
           onChange={handleUsername}
+          background="white"
           required
         />
         <Input
@@ -76,6 +77,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
           placeholder="Password"
           size="lg"
           type="password"
+          background="white"
           onChange={handlePassword}
         />
         <Flex align="center">

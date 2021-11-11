@@ -52,9 +52,6 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
   });
 
   async function submitPoll(question: any, options: any) {
-    console.log("question is:", question);
-    console.log("options are:", options);
-
     const newPoll = {
       question,
       options,
@@ -73,8 +70,7 @@ const NewPoll: FunctionComponent<NewPollProps> = () => {
     const data = await result.json();
     navigate('/');
 
-    console.log(data);
-  }
+ }
 
   return (
     <Flex direction="column" align="center">

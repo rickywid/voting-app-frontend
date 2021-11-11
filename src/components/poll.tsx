@@ -8,7 +8,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../contextFile";
 import { Bar } from 'react-chartjs-2';
 
@@ -45,7 +45,6 @@ const Poll: FunctionComponent<PollProps> = () => {
 
       const data = await res.json();
       const data2 = await res2.json();
-
       if (data2.success) {
         setShowResults(true);
       }
@@ -124,6 +123,12 @@ const Poll: FunctionComponent<PollProps> = () => {
       data: JSON.parse(pollResults[0].options_weight)
     }
 
+    const options = {
+      indexAxis: "y"
+      // Elements options apply to all of the options unless overridden in a dataset
+      // In this case, we are setting the border of each horizontal bar to be 2px wide
+    };
+
     const data = {
       labels,
       datasets: [
@@ -149,31 +154,41 @@ const Poll: FunctionComponent<PollProps> = () => {
         },
       ],
     };
-
-    return <Bar data={data} />
+    // @ts-ignore: Unreachable code error
+    return <Bar data={data} options={options} />
   }
 
   return (
     <>
-      <Heading as="h2" size="3xl">
-        {poll!.question}
-      </Heading>
       {loading ? (
         ""
       ) : (
         <Box>
+          <Heading as="h2" size="3xl" mb={10} textAlign="center">
+            {poll!.question}
+          </Heading>
           {showResults ? (
             <>
-              {displayChart()}
+              <Box
+                mb={10}
+                background="#b7d2d9"
+                padding="71px"
+                borderRadius="10px"
+              >
+                {displayChart()}
+              </Box>
+              <Box textAlign="right">
+                <Link to="/"><Button colorScheme="yellow">Back</Button></Link>
+              </Box>
             </>
           ) : (
             <>
-              <RadioGroup onChange={(e) => handleSelect(e)} value={voteSelected}>
+              <RadioGroup onChange={(e) => handleSelect(e)} value={voteSelected} mb={10}>
                 <Stack>
                   {JSON.parse(poll!.options).map(
                     (option: string, index: string) => {
                       return (
-                        <Radio size="lg" colorScheme="red" value={index}>
+                        <Radio size="lg" colorScheme="yellow" value={index}>
                           {option}
                         </Radio>
                       );
@@ -187,7 +202,8 @@ const Poll: FunctionComponent<PollProps> = () => {
             </>
           )}
         </Box>
-      )}
+      )
+      }
     </>
   );
 };
