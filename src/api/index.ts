@@ -12,10 +12,10 @@ const request = async (path: string, options?: any) => {
   return await res.json();
 };
 
-const get = async (path: string, options?: any) => {
+export const get = async (path: string, options?: any) => {
   return request(path, options);
 };
-const post = async (path: string, options?: any) => {
+export const post = async (path: string, options?: any) => {
   return request(path, {
     method: "POST",
     headers: {

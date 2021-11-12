@@ -10,8 +10,10 @@ import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../contextFile";
 import { Bar } from "react-chartjs-2";
+import { Authenticated, useAuth } from "../context/auth";
+import { post } from "../api";
 
-interface PollProps {}
+interface PollProps { }
 
 export interface IPoll {
   id: number;
@@ -22,9 +24,11 @@ export interface IPoll {
 }
 
 const Poll: FunctionComponent<PollProps> = () => {
-  const { auth } = useContext(UserContext);
+  // const { auth } = useContext(UserContext);
   let { id } = useParams();
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
+  const { user } = useAuth();
+
   const [poll, setPoll] = useState<IPoll>();
   const [loading, setLoading] = useState<boolean>(true);
   const [voteSelected, setSelectedVote] = useState<number>();
@@ -32,9 +36,9 @@ const Poll: FunctionComponent<PollProps> = () => {
   const [pollResults, setPollResults] = useState<any>();
 
   useEffect(() => {
-    if (!auth.user) {
-      navigate("/login");
-    }
+    // if (!auth.user) {
+    //   navigate("/login");
+    // }
 
     (async () => {
       const res = await fetch(`https://tva-backend.herokuapp.com/poll/${id}`);
@@ -46,7 +50,7 @@ const Poll: FunctionComponent<PollProps> = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ userId: auth.userId }),
+          body: JSON.stringify({ userId: user?.id }),
         }
       );
 
@@ -91,27 +95,31 @@ const Poll: FunctionComponent<PollProps> = () => {
           optionsWeight,
         };
 
-        await fetch(`https://tva-backend.herokuapp.com/poll/${id}/submit`, {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(bodyTest),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        await fetch(
+        post(
+          `https://tva-backend.herokuapp.com/poll/${id}/submit`,
+          {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(bodyTest),
+            headers: {
+              "Content-Type": "application/json",
+            }
+          }
+        )
+
+        post(
           `https://tva-backend.herokuapp.com/poll/${id}/submit-user`,
           {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({
-              userId: auth.userId,
+              userId: user?.id,
             }),
             headers: {
               "Content-Type": "application/json",
-            },
+            }
           }
-        );
+        )
         setShowResults(true);
       }
     })();
@@ -161,56 +169,68 @@ const Poll: FunctionComponent<PollProps> = () => {
 
   return (
     <>
-      {loading ? (
-        ""
-      ) : (
-        <Box>
-          <Heading as="h2" size="3xl" mb={10} textAlign="center">
-            {poll!.question}
-          </Heading>
-          {showResults ? (
-            <>
-              <Box
-                mb={10}
-                background="#b7d2d9"
-                padding="71px"
-                borderRadius="10px"
-              >
-                {displayChart()}
-              </Box>
-              <Box textAlign="right">
-                <Link to="/">
-                  <Button colorScheme="yellow">Back</Button>
+      {
+        loading ? <></> :
+          <Authenticated
+            fallback={
+              <Heading as="h2" size="large">
+                You must be logged in. Please{" "}
+                <Link style={{ textDecoration: "underline" }} to="/login">
+                  Log in
                 </Link>
-              </Box>
-            </>
-          ) : (
-            <>
-              <RadioGroup
-                onChange={(e) => handleSelect(e)}
-                value={voteSelected}
-                mb={10}
-              >
-                <Stack>
-                  {JSON.parse(poll!.options).map(
-                    (option: string, index: string) => {
-                      return (
-                        <Radio size="lg" colorScheme="yellow" value={index}>
-                          {option}
-                        </Radio>
-                      );
-                    }
-                  )}
-                </Stack>
-              </RadioGroup>
-              <Button onClick={handleSubmit} colorScheme="yellow">
-                Vote
-              </Button>
-            </>
-          )}
-        </Box>
-      )}
+                .
+              </Heading>
+            }
+          >
+            <Box>
+              <Heading as="h2" size="3xl" mb={10} textAlign="center">
+                {poll!.question}
+              </Heading>
+              {showResults ? (
+                <>
+                  <Box
+                    mb={10}
+                    background="#b7d2d9"
+                    padding="71px"
+                    borderRadius="10px"
+                  >
+                    {displayChart()}
+                  </Box>
+                  <Box textAlign="right">
+                    <Link to="/">
+                      <Button colorScheme="yellow">Back</Button>
+                    </Link>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <RadioGroup
+                    onChange={(e) => handleSelect(e)}
+                    value={voteSelected}
+                    mb={10}
+                  >
+                    <Stack>
+                      {JSON.parse(poll!.options).map(
+                        (option: string, index: string) => {
+                          return (
+                            <Radio size="lg" colorScheme="yellow" value={index}>
+                              {option}
+                            </Radio>
+                          );
+                        }
+                      )}
+                    </Stack>
+                  </RadioGroup>
+                  <Button onClick={handleSubmit} colorScheme="yellow">
+                    Vote
+                  </Button>
+                </>
+              )}
+            </Box>
+          </Authenticated>
+      }
     </>
+
   );
 };
 
