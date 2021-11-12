@@ -1,8 +1,7 @@
 import { Flex, Heading, Input, Button, Text } from "@chakra-ui/react";
-import { FunctionComponent, useState, useContext } from "react";
+import { FunctionComponent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { UserContext } from "../contextFile";
+import { useAuth } from "../context/auth";
 
 interface LoginProps {}
 
@@ -10,8 +9,8 @@ const Login: FunctionComponent<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
+  const { signin } = useAuth();
 
-  const { setAuth } = useContext(UserContext);
   let navigate = useNavigate();
 
   function handleUsername(e: any) {
@@ -22,27 +21,13 @@ const Login: FunctionComponent<LoginProps> = () => {
   }
 
   async function submitPassword() {
-    const userCredentials = {
-      username,
-      password,
-    };
-
-    const result = await fetch("https://tva-backend.herokuapp.com/login", {
-      method: "POST",
-      body: JSON.stringify(userCredentials),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    const data = await result.json();
-
-    if (data.success) {
-      setAuth({ user: userCredentials.username, userId: data.userId });
-      navigate("/", { replace: true });
-    } else {
-      setLoginFailed(true);
-    }
+    signin(username, password)
+      .then(() => {
+        navigate("/", { replace: true });
+      })
+      .catch(() => {
+        setLoginFailed(true);
+      });
   }
 
   return (
