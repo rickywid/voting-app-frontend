@@ -9,9 +9,9 @@ import {
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../contextFile";
-import { Bar } from 'react-chartjs-2';
+import { Bar } from "react-chartjs-2";
 
-interface PollProps { }
+interface PollProps {}
 
 export interface IPoll {
   id: number;
@@ -38,14 +38,17 @@ const Poll: FunctionComponent<PollProps> = () => {
 
     (async () => {
       const res = await fetch(`https://tva-backend.herokuapp.com/poll/${id}`);
-      const res2 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/voted`, {
-      method: 'POST',  
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: 'include',
-        body: JSON.stringify({ userId: auth.userId })
-      });
+      const res2 = await fetch(
+        `https://tva-backend.herokuapp.com/poll/${id}/voted`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ userId: auth.userId }),
+        }
+      );
 
       const data = await res.json();
       const data2 = await res2.json();
@@ -53,23 +56,25 @@ const Poll: FunctionComponent<PollProps> = () => {
         setShowResults(true);
       }
 
-      if (data)
-        setPoll(data[0]);
+      if (data) setPoll(data[0]);
       setLoading(false);
     })();
   }, []);
 
   useEffect(() => {
     const fetchReq = async () => {
-      const res3 = await fetch(`https://tva-backend.herokuapp.com/poll/${id}/results`, {
-        credentials: 'include'
-      });
+      const res3 = await fetch(
+        `https://tva-backend.herokuapp.com/poll/${id}/results`,
+        {
+          credentials: "include",
+        }
+      );
       const data3 = await res3.json();
       setPollResults(data3);
-    }
+    };
 
     fetchReq();
-  }, [showResults, setShowResults])
+  }, [showResults, setShowResults]);
 
   const handleSelect = (e: string) => {
     setSelectedVote(parseInt(e));
@@ -86,17 +91,14 @@ const Poll: FunctionComponent<PollProps> = () => {
           optionsWeight,
         };
 
-        await fetch(
-          `https://tva-backend.herokuapp.com/poll/${id}/submit`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify(bodyTest),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        await fetch(`https://tva-backend.herokuapp.com/poll/${id}/submit`, {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(bodyTest),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         await fetch(
           `https://tva-backend.herokuapp.com/poll/${id}/submit-user`,
           {
@@ -111,21 +113,19 @@ const Poll: FunctionComponent<PollProps> = () => {
           }
         );
         setShowResults(true);
-
       }
     })();
   };
 
   const displayChart = () => {
-
     const labels = JSON.parse(poll!.options);
     const d = {
-      label: '# of votes',
-      data: JSON.parse(pollResults[0].options_weight)
-    }
+      label: "# of votes",
+      data: JSON.parse(pollResults[0].options_weight),
+    };
 
     const options = {
-      indexAxis: "y"
+      indexAxis: "y",
       // Elements options apply to all of the options unless overridden in a dataset
       // In this case, we are setting the border of each horizontal bar to be 2px wide
     };
@@ -136,28 +136,28 @@ const Poll: FunctionComponent<PollProps> = () => {
         {
           ...d,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
           ],
           borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
           ],
           borderWidth: 1,
         },
       ],
     };
     // @ts-ignore: Unreachable code error
-    return <Bar data={data} options={options} />
-  }
+    return <Bar data={data} options={options} />;
+  };
 
   return (
     <>
@@ -179,12 +179,18 @@ const Poll: FunctionComponent<PollProps> = () => {
                 {displayChart()}
               </Box>
               <Box textAlign="right">
-                <Link to="/"><Button colorScheme="yellow">Back</Button></Link>
+                <Link to="/">
+                  <Button colorScheme="yellow">Back</Button>
+                </Link>
               </Box>
             </>
           ) : (
             <>
-              <RadioGroup onChange={(e) => handleSelect(e)} value={voteSelected} mb={10}>
+              <RadioGroup
+                onChange={(e) => handleSelect(e)}
+                value={voteSelected}
+                mb={10}
+              >
                 <Stack>
                   {JSON.parse(poll!.options).map(
                     (option: string, index: string) => {
@@ -203,8 +209,7 @@ const Poll: FunctionComponent<PollProps> = () => {
             </>
           )}
         </Box>
-      )
-      }
+      )}
     </>
   );
 };

@@ -1,4 +1,9 @@
-import React, { useReducer, useEffect, useContext } from "react";
+import React, {
+  useReducer,
+  useEffect,
+  useContext,
+  PropsWithChildren,
+} from "react";
 import { checkAuth, signIn, signOut, signUp } from "../api";
 
 type IUser = {
@@ -65,6 +70,31 @@ export const useAuth = () => {
 
   return auth;
 };
+
+const useIsAuthenticated = () => {
+  const { user } = useAuth();
+
+  return user !== null;
+};
+
+interface IAuthenticated {
+  fallback: JSX.Element;
+}
+
+export const Authenticated = (props: PropsWithChildren<IAuthenticated>) => {
+  const authenticated = useIsAuthenticated();
+
+  if (authenticated && React.isValidElement(props.children)) {
+    return props.children;
+  }
+
+  if (props.fallback) {
+    return props.fallback;
+  }
+
+  return null;
+};
+
 const AuthProvider = (props: React.PropsWithChildren<unknown>) => {
   const [state, dispatch] = useReducer(reducer, { user: null, loading: true });
 

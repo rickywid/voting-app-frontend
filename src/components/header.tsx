@@ -8,10 +8,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/auth";
+import { useAuth, Authenticated } from "../context/auth";
 
 const Header = () => {
-  const { user, signout } = useAuth();
+  const { signout } = useAuth();
 
   return (
     <Box paddingTop={5} paddingBottom={5}>
@@ -41,35 +41,35 @@ const Header = () => {
           >
             <Link to={"/"}>Home</Link>
           </Text>
-          {user ? (
-            <>
-              <Link to="/new" style={{ marginRight: 10 }}>
-                <Button colorScheme="linkedin" size="xs">
-                  new poll
-                </Button>
-              </Link>
-              <Button size="xs" colorScheme="whatsapp" onClick={signout}>
-                sign out
+          <Authenticated
+            fallback={
+              <UnorderedList>
+                <ListItem mr={4} listStyleType="none" display="inline">
+                  <Link to="/login">
+                    <Button size="xs" colorScheme="whatsapp">
+                      login
+                    </Button>
+                  </Link>
+                </ListItem>
+                <ListItem listStyleType="none" display="inline">
+                  <Link to="/signup">
+                    <Button colorScheme="linkedin" size="xs">
+                      sign up
+                    </Button>
+                  </Link>
+                </ListItem>
+              </UnorderedList>
+            }
+          >
+            <Link to="/new" style={{ marginRight: 10 }}>
+              <Button colorScheme="linkedin" size="xs">
+                new poll
               </Button>
-            </>
-          ) : (
-            <UnorderedList>
-              <ListItem mr={4} listStyleType="none" display="inline">
-                <Link to="/login">
-                  <Button size="xs" colorScheme="whatsapp">
-                    login
-                  </Button>
-                </Link>
-              </ListItem>
-              <ListItem listStyleType="none" display="inline">
-                <Link to="/signup">
-                  <Button colorScheme="linkedin" size="xs">
-                    sign up
-                  </Button>
-                </Link>
-              </ListItem>
-            </UnorderedList>
-          )}
+            </Link>
+            <Button size="xs" colorScheme="whatsapp" onClick={signout}>
+              sign out
+            </Button>
+          </Authenticated>
         </Flex>
       </Flex>
     </Box>
