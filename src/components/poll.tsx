@@ -96,29 +96,13 @@ const Poll: FunctionComponent<PollProps> = () => {
         };
 
         post(
-          `https://tva-backend.herokuapp.com/poll/${id}/submit`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify(bodyTest),
-            headers: {
-              "Content-Type": "application/json",
-            }
-          }
+          `/${id}/submit`,
+          { body: JSON.stringify(bodyTest) }
         )
 
         post(
-          `https://tva-backend.herokuapp.com/poll/${id}/submit-user`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({
-              userId: user?.id,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            }
-          }
+          `/poll/${id}/submit-user`,
+          { body: JSON.stringify({ userId: user?.id }) }
         )
         setShowResults(true);
       }
