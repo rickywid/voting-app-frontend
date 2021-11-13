@@ -1,9 +1,8 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Flex, Heading, Input, Button, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { UserContext } from "../contextFile";
+import { useAuth } from "../context/auth";
 
 interface SignupProps {}
 
@@ -11,8 +10,8 @@ const Signup: FunctionComponent<SignupProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [signupFailed, setSignupFailed] = useState(false);
+  const { signup } = useAuth();
 
-  const { setAuth } = useContext(UserContext);
   let navigate = useNavigate();
 
   function handleUsername(e: any) {
@@ -24,27 +23,9 @@ const Signup: FunctionComponent<SignupProps> = () => {
 
   async function submitPassword() {
     if (username.length > 0 && password.length > 0) {
-      const userCredentials = {
-        username,
-        password,
-      };
-
-      const result = await fetch("https://tva-backend.herokuapp.com/signup", {
-        method: "POST",
-        body: JSON.stringify(userCredentials),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await result.json();
-
-      if (data.success) {
-        setAuth({ user: userCredentials.username });
-        navigate("/login", { replace: true });
-      } else {
-        setSignupFailed(true);
-      }
+      signup(username, password)
+        .then(() => navigate("/login", { replace: true }))
+        .catch(() => setSignupFailed(true));
     } else {
       setSignupFailed(true);
     }
